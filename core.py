@@ -53,6 +53,7 @@ def doc_clean(doc):
 
 # get the vector for a document word2vec
 def docvec(doc):
+    nlp = spacy.load("en_vectors_web_lg")
     vec = nlp(doc)
     return np.mean([w.vector for w in vec], axis=0)
 
@@ -67,15 +68,16 @@ def cosine(v1, v2):
         return 0.0
 
 
-nlp = spacy.load("en_vectors_web_lg")
-doc1 = docvec(u'Hello this is document similarity calculation')
-doc2 = docvec(u'Hello this is python similarity calculation')
-doc3 = docvec(u'Hi there')
 
-print(doc1)
-print(similarity(doc1, doc2))
-print(similarity(doc2, doc3))
-print(similarity(doc1, doc3))
+
+# doc1 = docvec(u'Hello this is document similarity calculation')
+# doc2 = docvec(u'Hello this is python similarity calculation')
+# doc3 = docvec(u'Hi there')
+#
+# print(doc1)
+# print(similarity(doc1, doc2))
+# print(similarity(doc2, doc3))
+# print(similarity(doc1, doc3))
 
 
 
