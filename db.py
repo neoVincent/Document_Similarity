@@ -11,6 +11,12 @@ jdbcPort = 3306
 
 jdbcUrl = "jdbc:mysql://{0}:{1}/{2}".format(jdbcHostname, jdbcPort, jdbcDatabase)
 
+# Spark connect mysql
+connectionProperties = {
+  "user": jdbcuser,
+  "password": jdbcpwd,
+  "driver": jdbcdriver
+}
 
 # save it into database
 def persist(vectors):
@@ -19,7 +25,6 @@ def persist(vectors):
     sql = "UPDATE document set vec = %s where id = %s"
 
     for id, vec in vectors:
-        print(vec)
         cursor.execute(sql, (vec.dumps(), id))
 
     conn.commit()
@@ -54,7 +59,6 @@ def getVec(id):
     sql = "SELECT vec FROM document WHERE id = %s"
     cursor.execute(sql, (id,))
     res = cursor.fetchone()[0]
-    print(type(res))
     cursor.close()
     conn.close()
     return np.loads(res)

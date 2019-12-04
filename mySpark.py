@@ -1,19 +1,14 @@
-from pyspark import SparkContext
 from pyspark.sql import SparkSession
-import sys
-from operator import add
+from pyspark import SparkConf, SparkContext
+import os
 
-spark = SparkSession \
-    .builder \
-    .appName("PythonWordCount") \
-    .getOrCreate()
+# set up Spark
+SUBMIT_ARGS = "--jars mysql-connector-java-8.0.18.jar pyspark-shell"
+os.environ["PYSPARK_SUBMIT_ARGS"] = SUBMIT_ARGS
+os.environ["PYSPARK_PYTHON"] = "/usr/local/bin/python3"
+os.environ["PYSPARK_DRIVER_PYTHON"] = "/usr/local/bin/python3"
 
-lines = spark.read.text("word.txt").rdd.map(lambda r: r[0])
-counts = lines.flatMap(lambda x: x.split(' ')) \
-    .map(lambda x: (x, 1)) \
-    .reduceByKey(add)
-output = counts.collect()
-for (word, count) in output:
-    print("%s: %i" % (word, count))
+conf = SparkConf()
+context = SparkContext(conf=conf)
 
-spark.stop()
+spark = SparkSession(context)
