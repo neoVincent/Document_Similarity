@@ -13,4 +13,4 @@ def doc2vec():
   persist(vectors)
   spark.stop()
 
-doc2vec()
+# doc2vec()
