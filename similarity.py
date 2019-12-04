@@ -1,5 +1,4 @@
 from db import *
-from pyspark.sql import SQLContext
 from pyspark.sql import SparkSession
 from pyspark import SparkConf, SparkContext
 import os
@@ -13,21 +12,12 @@ os.environ["PYSPARK_SUBMIT_ARGS"] = SUBMIT_ARGS
 os.environ["PYSPARK_PYTHON"] = "/usr/local/bin/python3"
 os.environ["PYSPARK_DRIVER_PYTHON"] = "/usr/local/bin/python3"
 
-def tonparray(barray):
-    i = np.arange(300 * 1).reshape(300, 1)
-    arr = np.frombuffer(barray, count=300, dtype=np.float32)
-    print(arr)
-    print(arr.shape)
-    return arr
-
 # DEBUG
 docId = 1
-K = 2
+K = 1
 
 # Connect to db get the document full text by id
 vec = getVec(docId)
-print(vec.shape)
-print(type(vec[0]))
 
 # Spark connect mysql
 connectionProperties = {
@@ -41,13 +31,12 @@ context = SparkContext(conf=conf)
 spark = SparkSession(context)
 
 docdf = spark.read.jdbc(url=jdbcUrl, table="document", properties=connectionProperties)
-docdf.show(n=2)
 
 # compute cosine
-cosines = docdf.rdd.map(lambda d: (core.cosine(vec.tolist(), tonparray(d[2]).tolist()), d[0]))
+cosines = docdf.rdd.map(lambda d: (core.cosine(vec.tolist(), getVec(d[0]).tolist()), d[0]))
 topK = cosines.sortByKey(ascending=False, numPartitions=2).collect()
-for c,id in topK:
-    print(c)
-    print(id)
 
-# return the document id or text
+# output result
+for i in range(1, K+1):
+    print("cosine: %f, docId: %d" % (topK[i][0], topK[i][1]))
+

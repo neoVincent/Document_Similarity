@@ -35,7 +35,7 @@ def dbConnect():
             passwd=jdbcpwd,
             database=jdbcDatabase,
             charset='utf8',
-            use_pure = 'True',
+            use_pure='True',
             auth_plugin='mysql_native_password')
         conn.set_charset_collation("utf8")
     except mysql.connector.Error as err:
