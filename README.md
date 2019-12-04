@@ -9,6 +9,8 @@
     - Spark Parallel
         - map and collect: compute NLP word2vec for each doc element(details in ``NLP task``)
     - persis the value in database for cosine similarity computation
+        - dumps the vector list int string 
+        - stored as blob type in database
 - find top k similarity documents in db given a docid by user
     - Spark Parallel
         - map: compute cosine similarity, map into a key value pair (cosine, docid)
