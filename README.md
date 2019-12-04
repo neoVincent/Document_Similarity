@@ -1,4 +1,6 @@
 # Document Similarity
+Objective:
+Get familiar with Big data technology (Spark) and NLP 
 
 ## Work flow
 - create two tables
@@ -14,7 +16,7 @@
 - find top k similarity documents in db given a docid by user
     - Spark Parallel
         - map: compute cosine similarity, map into a key value pair (cosine, docid)
-        - collect: sortedbykey
+        - collect: sortbykey
     - return the top k docid in the list
 
 ## NLP tasks
@@ -33,6 +35,25 @@
 > note: 
 > - the trained ``Glove`` model is used as vector space
 > - NLP related functions are located in ``core.py``
+
+## Modules
+### core
+responsible for the NLP tasks
+- word2vec
+- cos similarity
+- text clean
+
+### mySpark
+responsible for the Spark Environment set up
+
+### doc2vec
+calculate the document vector 
+
+### similarity
+get top k similar document in database (cosine value, doc index)
+
+### db
+database configuration
 
 ### SpaCy
 NLP packages
@@ -75,7 +96,6 @@ Set the following environment variables in .bash_profile
 > - use zsh instead of bash
 >   - add source ~/.bash_profile in .zsh_rc
 
-
 ### load-spark-env.sh: Permission denied
 set the SPARK_HOME='/usr/local/bin/***/libexec
 [stackoverflow](https://stackoverflow.com/questions/34624821/apache-spark-upgrade-from-1-5-2-to-1-6-0-using-homebrew-leading-to-permission-de)
@@ -85,4 +105,20 @@ This is a multi-thread issue for python. set the following environment variables
 ```export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES```
 [stackoverflow](https://github.com/rtomayko/shotgun/issues/69)
 
+### unable to login db using password
+set the auth_plugin='mysql_native_password' while connect to db
 
+### read blob into numpy array
+remember to add these value while connect to db
+- charset
+- use_pure
+```
+conn = mysql.connector.connect(
+            host=jdbcHostname,
+            user=jdbcuser,
+            passwd=jdbcpwd,
+            database=jdbcDatabase,
+            charset='utf8',
+            use_pure='True',
+            auth_plugin='mysql_native_password')
+```
