@@ -33,4 +33,3 @@ print("Finish collecting")
 persist(vectors)
 spark.stop()
 
- # You could use ndarray.dumps() to pickle it to a string then write it to a BLOB field? Recover it using numpy.loads()
