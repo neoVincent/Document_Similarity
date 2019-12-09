@@ -4,7 +4,6 @@ import core
 import time
 # Given an docId, find the top k similar document in the database
 
-
 def topKSimilarity(docId=1 ,K=1):
     # Connect to db get the document full text by id
     vec = getVec(docId)
@@ -12,6 +11,7 @@ def topKSimilarity(docId=1 ,K=1):
 
     start = time.time()
     # compute cosine
+    # TODO: find a way to decode blob into nparray correctly
     cosines = docdf.rdd.map(lambda d: (core.cosine(vec.tolist(), getVec(d[0]).tolist()), d[0]))
     topK = cosines.sortByKey(ascending=False, numPartitions=1).collect()
 

@@ -1,12 +1,13 @@
 import mysql.connector
 from mysql.connector import errorcode
 import numpy as np
+import time
 
 jdbcuser = "root"
-jdbcpwd = "123456"
+jdbcpwd = "bigdata"
 jdbcdriver = "com.mysql.jdbc.Driver"
-jdbcHostname = "localhost"
-jdbcDatabase = "moviereview"
+jdbcHostname = "35.245.54.90"
+jdbcDatabase = "testdb"
 jdbcPort = 3306
 
 jdbcUrl = "jdbc:mysql://{0}:{1}/{2}".format(jdbcHostname, jdbcPort, jdbcDatabase)
@@ -22,15 +23,21 @@ connectionProperties = {
 def persist(vectors):
     conn = dbConnect()
     cursor = conn.cursor()
-    sql = "UPDATE document set vec = %s where id = %s"
+    sql = "UPDATE test set vec = %s where id = %s"
 
+    print("start to persist")
+    start = time.time()
+    values = []
     for id, vec in vectors:
-        cursor.execute(sql, (vec.dumps(), id))
-
+        values.append((vec.dumps(), id))
+        # cursor.execute(sql, (vec.dumps(), id))
+    cursor.executemany(sql, values)
     conn.commit()
     cursor.close()
     conn.close()
 
+    end = time.time()
+    print("finish persisting by ", (end - start))
 
 def dbConnect():
     try:
@@ -53,12 +60,12 @@ def dbConnect():
         return None
     return conn
 
+conn = dbConnect()
+cursor = conn.cursor()
 def getVec(id):
-    conn = dbConnect()
-    cursor = conn.cursor()
-    sql = "SELECT vec FROM document WHERE id = %s"
+    # cursor = conn.cursor()
+    print("GET VEC ", id)
+    sql = "SELECT vec FROM reviews WHERE id = %s"
     cursor.execute(sql, (id,))
     res = cursor.fetchone()[0]
-    cursor.close()
-    conn.close()
     return np.loads(res)
