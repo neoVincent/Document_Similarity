@@ -2,8 +2,9 @@ from db import *
 from mySpark import spark
 import core
 import time
-# Given an docId, find the top k similar document in the database
 
+
+# Given an docId, find the top k similar document in the database
 def topKSimilarity(docId=1 ,K=1):
     # Connect to db get the document full text by id
     vec = getVec(docId)

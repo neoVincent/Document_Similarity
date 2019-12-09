@@ -39,6 +39,7 @@ def persist(vectors):
     end = time.time()
     print("finish persisting by ", (end - start))
 
+
 def dbConnect():
     try:
         conn = mysql.connector.connect(
@@ -60,8 +61,11 @@ def dbConnect():
         return None
     return conn
 
+
 conn = dbConnect()
 cursor = conn.cursor()
+
+
 def getVec(id):
     # cursor = conn.cursor()
     print("GET VEC ", id)

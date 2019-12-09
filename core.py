@@ -11,6 +11,7 @@ import time
 
 nlp = spacy.load("en_vectors_web_lg")
 
+
 def text_cleaner(text):
     rules = [
         {r'>\s+': u'>'},  # remove spaces after a tag opens or closes
@@ -54,6 +55,7 @@ def doc_clean(doc):
     print(stemmed_doc)
     return stemmed_doc
 
+
 # get the vector for a document word2vec
 def docvec(id, doc):
     print("compute the doc ", id)
@@ -65,8 +67,10 @@ def docvec(id, doc):
     print("%d finish computing: %f " %(id, t2-t1))
     return res
 
+
 def similarity(docvec1,docvec2):
     return cosine(docvec1, docvec2)
+
 
 # cosine similarity
 def cosine(v1, v2):
