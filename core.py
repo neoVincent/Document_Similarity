@@ -7,6 +7,9 @@ from autocorrect import spell
 import numpy as np
 from numpy import dot
 from numpy.linalg import norm
+import time
+
+nlp = spacy.load("en_vectors_web_lg")
 
 def text_cleaner(text):
     rules = [
@@ -52,10 +55,15 @@ def doc_clean(doc):
     return stemmed_doc
 
 # get the vector for a document word2vec
-def docvec(doc):
-    nlp = spacy.load("en_vectors_web_lg")
+def docvec(id, doc):
+    print("compute the doc ", id)
+    t1 = time.time()
     vec = nlp(doc)
-    return np.mean([w.vector for w in vec], axis=0)
+    # return np.mean([w.vector for w in vec], axis=0)
+    res = np.mean([w.vector for w in vec], axis=0)
+    t2 = time.time()
+    print("%d finish computing: %f " %(id, t2-t1))
+    return res
 
 def similarity(docvec1,docvec2):
     return cosine(docvec1, docvec2)
