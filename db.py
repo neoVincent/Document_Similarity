@@ -4,10 +4,10 @@ import numpy as np
 import time
 
 jdbcuser = "root"
-jdbcpwd = "bigdata"
+jdbcpwd = ""
 jdbcdriver = "com.mysql.jdbc.Driver"
-jdbcHostname = "35.245.54.90"
-jdbcDatabase = "testdb"
+jdbcHostname = ""
+jdbcDatabase = ""
 jdbcPort = 3306
 
 jdbcUrl = "jdbc:mysql://{0}:{1}/{2}".format(jdbcHostname, jdbcPort, jdbcDatabase)
